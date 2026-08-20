@@ -1,4 +1,27 @@
 {
     "jupyter.interactiveWindow.cellMarker.codeRegex": "^# COMMAND ----------|^# Databricks notebook source|^(#\\s*%%|#\\s*\\<codecell\\>|#\\s*In\\[\\d*?\\]|#\\s*In\\[ \\])",
-    "jupyter.interactiveWindow.cellMarker.default": "# COMMAND ----------"
+    "jupyter.interactiveWindow.cellMarker.default": "# COMMAND ----------",
+    "sqltools.connections": [
+        {
+            "connectionMethod": "Hostname and Token",
+            "catalog": "workspace",
+            "previewLimit": 50,
+            "driver": "Databricks",
+            "name": "MerchantDB on DataBricks",
+            "group": "my  DataBricks",
+            "host": "dbc-58551b97-ec3c.cloud.databricks.com",
+            "path": "/sql/1.0/warehouses/ca7fe728ba9718f5",
+            "schema": "bronze"
+        },
+        {
+            "connectionMethod": "VS Code Extension (beta)",
+            "catalog": "workspace",
+            "previewLimit": 50,
+            "driver": "Databricks",
+            "name": "Silver",
+            "group": "my DataBricks",
+            "schema": "silver",
+            "path": "/sql/1.0/warehouses/ca7fe728ba9718f5"
+        }
+    ]
 }
