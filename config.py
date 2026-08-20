@@ -22,9 +22,10 @@ from dotenv import load_dotenv
 
 # Loads .env into os.environ if present. No-op in CI/job contexts where
 # real env vars are already injected (e.g. by a DAB job's env config).
-load_dotenv()
+load_dotenv(override=True)
 
 ENV = os.environ.get("PIPELINE_ENV", "dev")
+print(f"Loading config for PIPELINE_ENV={ENV} from config/{ENV}.yaml")
 _CONFIG_DIR = Path(__file__).parent / "config"
 
 

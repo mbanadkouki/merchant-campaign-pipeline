@@ -21,23 +21,31 @@
 # MAGIC    disappears without a trace and downstream consumers can alert on volume.
 
 # COMMAND ----------
+import config
+print(config.describe())
 
-from pyspark.sql import SparkSession, functions as F, Window
+from pyspark.sql import functions as F, Window
+from databricks.connect import DatabricksSession
+
 from pyspark.sql.types import (
     StructType, StructField, StringType, DateType, DoubleType,
     LongType, TimestampType
 )
 from datetime import date as pydate
 
-spark = SparkSession.builder.appName("silver_merchant_campaign_events").getOrCreate()
+spark = DatabricksSession.builder.getOrCreate()
 
 # Databricks Free Edition's default catalog is "workspace" — Unity Catalog
 # requires the three-level catalog.schema.table name, same as Bronze.
-spark.sql("CREATE SCHEMA IF NOT EXISTS workspace.silver")
 
-BRONZE_TABLE = "workspace.bronze.merchant_campaign_events"
-SILVER_TABLE = "workspace.silver.merchant_campaign_events"
-REJECTED_TABLE = "workspace.silver.merchant_campaign_events_rejected"
+# spark.sql("CREATE SCHEMA IF NOT EXISTS workspace.silver")
+# BRONZE_TABLE = "workspace.bronze.merchant_campaign_events"
+# SILVER_TABLE = "workspace.silver.merchant_campaign_events"
+# REJECTED_TABLE = "workspace.silver.merchant_campaign_events_rejected"
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {config.SILVER_SCHEMA}")
+BRONZE_TABLE = config.BRONZE_EVENTS_TABLE
+SILVER_TABLE = config.SILVER_EVENTS_TABLE
+REJECTED_TABLE = config.SILVER_REJECTED_TABLE
 
 # COMMAND ----------
 
@@ -231,9 +239,8 @@ print(f"Rejected rows written: {rejected_df.count()}")
 
 # COMMAND ----------
 
-display(spark.table(SILVER_TABLE).limit(10))
-display(spark.table(REJECTED_TABLE).groupBy("_rejection_reason").count())
-
+spark.table(SILVER_TABLE).limit(10).show(truncate=False)
+spark.table(REJECTED_TABLE).groupBy("_rejection_reason").count().show(truncate=False)
 # COMMAND ----------
 
 # MAGIC %md

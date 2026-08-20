@@ -11,16 +11,20 @@
 # MAGIC partitioning — you'll see all three in action below.
 
 # COMMAND ----------
-
+import config
+print(config.describe())
 import random
 from datetime import date, timedelta
 
-from pyspark.sql import SparkSession
+#from pyspark.sql import SparkSession
+from databricks.connect import DatabricksSession
+
 from pyspark.sql import functions as F
 from pyspark.sql.functions import spark_partition_id, countDistinct
 from pyspark.sql.types import (
     StructType, StructField, StringType, DoubleType, IntegerType, DateType
 )
+
 
 # COMMAND ----------
 
@@ -31,10 +35,12 @@ from pyspark.sql.types import (
 
 # COMMAND ----------
 
-spark = SparkSession.builder.appName("merchant-campaign-bronze").getOrCreate()
+# spark = SparkSession.builder.appName("merchant-campaign-bronze").getOrCreate()
+spark = DatabricksSession.builder.getOrCreate()
+
 
 # Databricks Free Edition's default catalog is called "workspace".
-spark.sql("CREATE SCHEMA IF NOT EXISTS workspace.bronze")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {config.BRONZE_SCHEMA}")
 
 # COMMAND ----------
 
@@ -62,16 +68,23 @@ schema = StructType([
 
 # COMMAND ----------
 
-MARKETS = ["DE", "NL", "PL", "IT", "FR"]
-MERCHANTS = [f"m_{i:04d}" for i in range(1, 51)]     # 50 merchants
-CAMPAIGNS = [f"c_{i:04d}" for i in range(1, 201)]    # 200 campaigns
+# MARKETS = ["DE", "NL", "PL", "IT", "FR"]
+# MERCHANTS = [f"m_{i:04d}" for i in range(1, 51)]     # 50 merchants
+# CAMPAIGNS = [f"c_{i:04d}" for i in range(1, 201)]    # 200 campaigns
+MARKETS = config.MARKETS
+MERCHANTS = [f"m_{i:04d}" for i in range(1, config.SYNTHETIC_NUM_MERCHANTS + 1)]
+CAMPAIGNS = [f"c_{i:04d}" for i in range(1, config.SYNTHETIC_NUM_CAMPAIGNS + 1)]
+
 
 def random_date(start: date, end: date) -> date:
     delta_days = (end - start).days
     return start + timedelta(days=random.randint(0, delta_days))
 
 def generate_rows(n: int):
-    start, end = date(2026, 1, 1), date(2026, 6, 30)
+    # start, end = date(2026, 1, 1), date(2026, 6, 30)
+    start = date.fromisoformat(config.SYNTHETIC_DATE_START)
+    end = date.fromisoformat(config.SYNTHETIC_DATE_END)
+
     for _ in range(n):
         impressions = random.randint(100, 50000)
         # click-through rate roughly 0.5% - 4%, with some noise
@@ -88,7 +101,9 @@ def generate_rows(n: int):
         )
 
 # Nothing has actually executed yet up to this point beyond Python-side generation.
-rows = list(generate_rows(20000))
+# rows = list(generate_rows(20000))
+rows = list(generate_rows(config.SYNTHETIC_NUM_ROWS))
+
 
 # COMMAND ----------
 
@@ -149,7 +164,8 @@ df = df.repartition("market")
     .format("delta")
     .mode("overwrite")
     .partitionBy("market")
-    .saveAsTable("workspace.bronze.merchant_campaign_events")
+    #.saveAsTable("workspace.bronze.merchant_campaign_events")
+    .saveAsTable(config.BRONZE_EVENTS_TABLE)
 )
 
 print("Bronze ingestion complete.")
