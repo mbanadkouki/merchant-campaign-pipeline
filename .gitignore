@@ -1,0 +1,7 @@
+data/
+.databricks
+# Add these lines to your existing .gitignore (create one if you don't have it)
+.env
+__pycache__/
+*.pyc
+.venv/

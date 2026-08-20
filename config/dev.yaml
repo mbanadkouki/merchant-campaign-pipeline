@@ -1,0 +1,30 @@
+# Environment config: dev
+#
+# On Databricks Free Edition there is only one catalog ("workspace"), so
+# dev/staging/prod all point at the same physical catalog for now. In a
+# real ZMS-style setup, each environment would have its own catalog with
+# its own storage location and access policy (dev_catalog / staging_catalog
+# / prod_catalog) — this file is where that separation would live.
+
+catalog: workspace
+
+schemas:
+  bronze: bronze
+  silver: silver
+  gold: gold
+
+markets:
+  - DE
+  - NL
+  - PL
+  - IT
+  - FR
+
+# Synthetic data generation parameters (Day 1) — env-tunable so a
+# "staging" run could generate a bigger/smaller dataset without a code change.
+synthetic_data:
+  num_rows: 20000
+  num_merchants: 50
+  num_campaigns: 200
+  date_range_start: "2026-01-01"
+  date_range_end: "2026-06-30"

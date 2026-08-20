@@ -1,0 +1,28 @@
+# Environment config: staging
+#
+# PLACEHOLDER: Free Edition doesn't provide a separate staging workspace/
+# catalog, so this file isn't exercised end-to-end. It exists to show the
+# intended promotion path: dev -> staging -> prod, each with its own
+# catalog and (in a real deployment) its own storage location and DAB
+# target in databricks.yml.
+
+catalog: workspace   # would be e.g. "staging_catalog" with a real workspace
+
+schemas:
+  bronze: bronze
+  silver: silver
+  gold: gold
+
+markets:
+  - DE
+  - NL
+  - PL
+  - IT
+  - FR
+
+synthetic_data:
+  num_rows: 20000
+  num_merchants: 50
+  num_campaigns: 200
+  date_range_start: "2026-01-01"
+  date_range_end: "2026-06-30"

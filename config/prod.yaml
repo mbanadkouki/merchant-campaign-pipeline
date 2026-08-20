@@ -1,0 +1,20 @@
+# Environment config: prod
+#
+# PLACEHOLDER — same reasoning as staging.yaml. In a real deployment this
+# would point at "prod_catalog" with tighter Unity Catalog access policies,
+# a real (non-synthetic) ingestion source, and no synthetic_data section
+# at all — prod doesn't generate fake data, it ingests real events.
+
+catalog: workspace   # would be e.g. "prod_catalog" with a real workspace
+
+schemas:
+  bronze: bronze
+  silver: silver
+  gold: gold
+
+markets:
+  - DE
+  - NL
+  - PL
+  - IT
+  - FR
