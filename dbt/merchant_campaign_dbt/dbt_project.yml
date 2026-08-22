@@ -1,0 +1,16 @@
+name: 'merchant_campaign_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'merchant_campaign_dbt'   # must match the profile name in ~/.dbt/profiles.yml
+
+model-paths: ["models"]
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  merchant_campaign_dbt:
+    marts:
+      +materialized: table     # Gold-equivalent tables: full rebuild each run, same
+                                # idempotent-overwrite pattern as Day 3's PySpark version

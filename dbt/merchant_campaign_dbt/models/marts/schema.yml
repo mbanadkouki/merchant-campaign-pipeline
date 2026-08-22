@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: dim_merchant
+    description: "One row per merchant. SCD Type 1 (full rebuild each run)."
+    columns:
+      - name: merchant_key
+        description: "Surrogate key, referenced by fact_campaign_daily."
+        tests:
+          - unique
+          - not_null
+      - name: merchant_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_market
+    description: "One row per market (DE, NL, PL, IT, FR)."
+    columns:
+      - name: market_key
+        tests:
+          - unique
+          - not_null
+      - name: market
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_campaign_daily
+    description: "One row per merchant + campaign + market + date, with derived metrics."
+    columns:
+      - name: merchant_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_merchant')
+                field: merchant_key
+      - name: market_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_market')
+                field: market_key
+      - name: ctr
+        tests:
+          - not_null
+      - name: cost_per_click
+        tests:
+          - not_null

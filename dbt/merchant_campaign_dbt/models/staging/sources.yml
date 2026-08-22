@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: silver
+    database: workspace   # Unity Catalog: database == catalog in dbt's terminology
+    schema: silver
+    tables:
+      - name: merchant_campaign_events
+        description: "Clean, deduped, schema-enforced events from Day 2's PySpark Silver job."
