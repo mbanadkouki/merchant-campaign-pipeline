@@ -53,6 +53,11 @@ BRONZE_EVENTS_TABLE = f"{BRONZE_SCHEMA}.merchant_campaign_events"
 SILVER_EVENTS_TABLE = f"{SILVER_SCHEMA}.merchant_campaign_events"
 SILVER_REJECTED_TABLE = f"{SILVER_SCHEMA}.merchant_campaign_events_rejected"
 
+GOLD_DIM_MERCHANT_TABLE = f"{GOLD_SCHEMA}.dim_merchant"
+GOLD_DIM_MARKET_TABLE = f"{GOLD_SCHEMA}.dim_market"
+GOLD_FACT_CAMPAIGN_DAILY_TABLE = f"{GOLD_SCHEMA}.fact_campaign_daily"
+
+
 # --- Business config ---------------------------------------------------------
 MARKETS = _cfg.get("markets", [])
 

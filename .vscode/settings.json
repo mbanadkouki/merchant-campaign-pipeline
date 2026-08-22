@@ -22,6 +22,16 @@
             "group": "my DataBricks",
             "schema": "silver",
             "path": "/sql/1.0/warehouses/ca7fe728ba9718f5"
+        },
+        {
+            "connectionMethod": "VS Code Extension (beta)",
+            "catalog": "workspace",
+            "previewLimit": 50,
+            "driver": "Databricks",
+            "name": "Gold",
+            "group": "my DataBricks",
+            "path": "/sql/1.0/warehouses/ca7fe728ba9718f5",
+            "schema": "gold"
         }
     ]
 }
