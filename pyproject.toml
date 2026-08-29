@@ -1,0 +1,51 @@
+[project]
+name = "merchant-campaign-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "mbanadkouki", email = "mbanadkouki2@yahoo.com" }
+]
+requires-python = "==3.12.*"
+dependencies = [
+    "certifi==2026.7.22",
+    "cffi==2.1.1",
+    "charset-normalizer==3.5.1",
+    "cryptography==50.0.0",
+    "databricks-connect==17.3.13",
+    "databricks-sdk==0.133.0",
+    "google-auth==2.56.3",
+    "googleapis-common-protos==1.75.1",
+    "grpcio==1.83.0",
+    "grpcio-status==1.83.0",
+    "idna==3.19",
+    "numpy==2.5.2",
+    "packaging==26.3",
+    "pandas==2.3.3",
+    "protobuf==6.33.6",
+    "psycopg2>=2.9.12",
+    "py4j==0.10.9.9",
+    "pyarrow==24.0.0",
+    "pyasn1==0.6.4",
+    "pyasn1-modules==0.4.2",
+    "pycparser==3.0",
+    "python-dateutil==2.9.0.post0",
+    "python-dotenv==1.2.3",
+    "pytz==2026.3.post1",
+    "pyyaml==6.0.3",
+    "requests==2.34.2",
+    "setuptools==84.0.0",
+    "six==1.17.0",
+    "sqlalchemy>=2.0.52",
+    "typing-extensions==4.16.0",
+    "tzdata==2026.3",
+    "urllib3==2.7.0",
+    "zstandard==0.25.0",
+]
+
+[project.scripts]
+merchant-campaign-pipeline = "merchant_campaign_pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"

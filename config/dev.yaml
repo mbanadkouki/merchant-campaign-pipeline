@@ -5,7 +5,6 @@
 # real ZMS-style setup, each environment would have its own catalog with
 # its own storage location and access policy (dev_catalog / staging_catalog
 # / prod_catalog) — this file is where that separation would live.
-
 catalog: workspace
 
 schemas:

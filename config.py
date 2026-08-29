@@ -58,6 +58,13 @@ GOLD_DIM_MARKET_TABLE = f"{GOLD_SCHEMA}.dim_market"
 GOLD_FACT_CAMPAIGN_DAILY_TABLE = f"{GOLD_SCHEMA}.fact_campaign_daily"
 
 
+# --- Postgres serving layer (Day 5) -----------------------------------------
+# Just the connection string, as a value — NOT a live engine/connection.
+# config.py's job is exposing config, not opening network connections as a
+# side effect of being imported. The engine gets created explicitly inside
+# whichever script actually needs to talk to Postgres.
+NEON_DATABASE_URL = os.environ.get("NEON_DATABASE_URL")
+
 # --- Business config ---------------------------------------------------------
 MARKETS = _cfg.get("markets", [])
 
@@ -68,6 +75,7 @@ SYNTHETIC_NUM_MERCHANTS = _synthetic.get("num_merchants")
 SYNTHETIC_NUM_CAMPAIGNS = _synthetic.get("num_campaigns")
 SYNTHETIC_DATE_START = _synthetic.get("date_range_start")
 SYNTHETIC_DATE_END = _synthetic.get("date_range_end")
+
 
 
 def describe() -> str:

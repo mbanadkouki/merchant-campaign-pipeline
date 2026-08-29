@@ -1,8 +1,4 @@
 # Databricks notebook source
-# /// script
-# [tool.databricks.environment]
-# environment_version = "5"
-# ///
 # MAGIC %md
 # MAGIC # Day 3 — Gold Layer: Star Schema (Dimensions + Fact)
 # MAGIC
@@ -73,12 +69,11 @@ dim_merchant_df = (
     .withColumn("effective_date", F.current_date())
     .select("merchant_key", "merchant_id", "effective_date")
 )
-# SCD (Slowly Changing Dimension) type 1 used here: overwrite the entire dimension each run, no history kept. 
-# Type 2 would require a more complex merge logic to preserve historical rows and only insert new ones or update existing ones with an end date.
+
 (
     dim_merchant_df.write
     .format("delta")
-    .mode("overwrite")   # SCD Type 1: full rebuild, no history kept 
+    .mode("overwrite")   # SCD Type 1: full rebuild, no history kept
     .option("mergeSchema", "false")
     .saveAsTable(DIM_MERCHANT_TABLE)
 )
@@ -142,7 +137,7 @@ fact_df = (
     .join(dim_merchant_df.select("merchant_key", "merchant_id"), on="merchant_id", how="inner")
     .join(dim_market_df.select("market_key", "market"), on="market", how="inner")
     .withColumn(
-        "ctr", # click-through rate = clicks / impressions, null-safe
+        "ctr",
         F.when(F.col("impressions") > 0, F.col("clicks") / F.col("impressions")).otherwise(F.lit(0.0))
     )
     .withColumn(
@@ -166,6 +161,7 @@ fact_df = (
     fact_df.write
     .format("delta")
     .mode("overwrite")
+    .option("overwriteSchema", "true")
     .option("mergeSchema", "false")
     .partitionBy("market_key", "date")
     .saveAsTable(FACT_TABLE)
