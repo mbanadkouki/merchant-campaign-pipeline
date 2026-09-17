@@ -1,5 +1,7 @@
 airflow/logs/
+Documents/
 data/
+logs/
 airflow/.env
 .databricks
 # Add these lines to your existing .gitignore (create one if you don't have it)
